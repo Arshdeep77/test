@@ -3,11 +3,15 @@ from .models import Message
 from .models import Chat
 from .serializer import MessageSerializer
 # Create your views here.
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.decorators import authentication_classes
 @api_view(["Get"])
+@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def fetch_message(request,id):
     
@@ -22,8 +26,12 @@ def fetch_message(request,id):
         messages_data= messages_data[::-1]
     return Response({"data":messages_data})
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def index(request):
     return render(request, "chat/index.html")
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def room(request, room_name):
     return render(request, "chat/room.html", {"room_name": room_name})
